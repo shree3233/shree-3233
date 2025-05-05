@@ -1,55 +1,77 @@
-pip install scikit-learn nltk
+def welcome():
+    print("****** Welcome to Food Shop ******")
+    print()
 
-# offline_chatbot.py
 
-import nltk
-import numpy as np
-from sklearn.feature_extraction.text import TfidfVectorizer
-from sklearn.metrics.pairwise import cosine_similarity
+def info():
+    global name
+    name = input("Can I know your good name: ")
+    print(f"Hey {name}! Good to see you here!!!")
+    print("You are in the right place, I will help you book your dish and drinks.")
+    print()
 
-nltk.download('punkt')  # First time only
-from nltk.tokenize import sent_tokenize
 
-# Knowledge base (expand this as needed)
-faq_data = """
-Hi! How can I assist you?
-Our customer support is available 24/7.
-You can return a product within 30 days of delivery.
-You can track your order from the 'My Orders' page.
-To speak to a human, please call our helpline at 1800-123-456.
-Refunds are processed within 5-7 business days.
-Please provide your order ID to help us assist you better.
-You can cancel your order from the orders section if it's not yet shipped.
-"""
+def menu():
+    print('''Here is your menu with their prices
+1. Pizza - RS.200
+2. Mango Juice - RS.70
+3. Apple Juice - RS.80''')
 
-# Preprocess
-sentences = sent_tokenize(faq_data.lower())
 
-def get_response(user_input):
-    user_input = user_input.lower()
-    all_sentences = sentences + [user_input]
+def order(price, product):
+    print(f"\nThank you for choosing {product}\n")
+    print("Please give us some more information about you!!!!")
+    mob = input("Enter your mobile number: ")
+    add = input("Enter your delivery address: ")
 
-    vectorizer = TfidfVectorizer()
-    vectors = vectorizer.fit_transform(all_sentences)
-    similarity = cosine_similarity(vectors[-1], vectors[:-1])
-    index = np.argmax(similarity)
+    print('''Choose mode of payment:
+1. Online
+2. Cash on delivery''')
 
-    score = similarity[0, index]
-    if score < 0.2:
-        return "I'm sorry, I couldn't understand that. Could you rephrase?"
-    return sentences[index]
+    pay = input("Enter payment option (1 or 2): ")
+    paymode = "Online"  # Default payment mode
 
-def main():
-    print("Smart Offline Customer Service Chatbot (type 'bye' to quit)\n")
+    if pay == "2":
+        paymode = "Cash on delivery"
 
-    while True:
-        user_input = input("You: ")
-        if user_input.lower() == "bye":
-            print("Bot: Thank you for chatting. Goodbye!")
-            break
+    print("\n******* Here is the detail of the selected order ******\n")
+    print(f"Customer Name: {name}")
+    print(f"Product Name: {product}")
+    print(f"Price: RS.{price}")
+    print(f"Mode of Payment: {paymode}")
+    print(f"Delivery Address: {add}\n")
 
-        response = get_response(user_input)
-        print("Bot:", response)
+    b = input("Please confirm by pressing 1, else 0 to cancel: ")
+    print()
 
-if __name__ == "__main__":
-    main()
+    if b == "1":
+        print("\n******* Your order is booked successfully ******* ")
+        print(f"Customer Name: {name}")
+        print(f"Product Name: {product}")
+        print(f"Price: RS.{price}")
+        print(f"Mode of Payment: {paymode}")
+        print(f"Delivery Address: {add}\n")
+        print("Thank you for your interest!!! Have a nice day!!!")
+    else:
+        print("***** Thank you for visiting!!! Have a nice day!!! *****")
+
+
+def choice():
+    print("Please select a product you wish to order: ")
+    a = input().lower()  # Convert input to lowercase for consistency
+
+    if a == "pizza":
+        order(200, "Pizza")
+    elif a == "mango juice":
+        order(70, "Mango Juice")
+    elif a == "apple juice":
+        order(80, "Apple Juice")
+    else:
+        print("You have not selected any valid product... Thank you for visiting!!! Have a nice day!!!!")
+
+
+# Call the functions in sequence to run the program
+welcome()
+info()
+menu()
+choice()
