@@ -1,0 +1,116 @@
+
+-------------------- Titanic Data Analysis using Seaborn & Matplotlib --------------------
+
+This Python script performs exploratory data analysis (EDA) on the Titanic dataset using 
+libraries like pandas, seaborn, and matplotlib. Each plot helps uncover patterns related 
+to survival, age, fare, class, and other passenger details.
+
+-------------------- Code and Explanation --------------------
+
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+
+# Load the dataset
+df = pd.read_csv('/mnt/data/Titanic-Dataset.csv')
+
+# Show basic info and first few rows
+print(df.info())      # Displays summary info about columns, data types, and missing values
+print(df.head())      # Displays the first 5 rows of the dataset
+
+--------------------- PLOTS ---------------------
+
+# 1. Count Plot: Survival count by sex
+sns.countplot(x='Survived', hue='Sex', data=df)
+plt.title('Survival Count by Sex')
+plt.xlabel('Survived (0 = No, 1 = Yes)')
+plt.ylabel('Count')
+plt.legend(title='Sex')
+plt.show()
+
+# Explanation: Shows how many males and females survived or died. Helps identify gender-based survival bias.
+
+# 2. Count Plot: Survival count by passenger class
+sns.countplot(x='Survived', hue='Pclass', data=df)
+plt.title('Survival Count by Passenger Class')
+plt.xlabel('Survived (0 = No, 1 = Yes)')
+plt.ylabel('Count')
+plt.legend(title='Pclass')
+plt.show()
+
+# Explanation: Compares survival rates among 1st, 2nd, and 3rd class passengers.
+
+# 3. Hist Plot: Age distribution by survival
+sns.histplot(data=df, x='Age', hue='Survived', kde=True, bins=30)
+plt.title('Age Distribution by Survival')
+plt.xlabel('Age')
+plt.ylabel('Number of Passengers')
+plt.legend(title='Survived')
+plt.show()
+
+# Explanation: Histogram with KDE overlay to see age patterns among survivors vs non-survivors.
+
+# 4. Hist Plot: Fare distribution
+sns.histplot(df['Fare'], bins=40, kde=True)
+plt.title('Distribution of Ticket Fare')
+plt.xlabel('Fare')
+plt.ylabel('Number of Passengers')
+plt.show()
+
+# Explanation: Shows how fares are distributed. Useful for spotting skewness or outliers.
+
+# 5. KDE Plot: Age distribution with survival
+sns.kdeplot(data=df, x='Age', hue='Survived', fill=True)
+plt.title('KDE of Age Distribution by Survival')
+plt.xlabel('Age')
+plt.ylabel('Density')
+plt.legend(title='Survived')
+plt.show()
+
+# Explanation: KDE (Kernel Density Estimation) plot to smooth age distribution curves by survival.
+
+# 6. Bar Plot: Average fare by passenger class
+sns.barplot(x='Pclass', y='Fare', data=df, ci=None)
+plt.title('Average Fare by Passenger Class')
+plt.xlabel('Passenger Class')
+plt.ylabel('Average Fare')
+plt.show()
+
+# Explanation: Visualizes average fare paid per class. Higher fare indicates higher class.
+
+# 7. Count Plot: Survival by embarkation location
+sns.countplot(x='Survived', hue='Embarked', data=df)
+plt.title('Survival Count by Embarked Location')
+plt.xlabel('Survived (0 = No, 1 = Yes)')
+plt.ylabel('Count')
+plt.legend(title='Embarked')
+plt.show()
+
+# Explanation: Shows survival count based on where passengers boarded (C = Cherbourg, Q = Queenstown, S = Southampton).
+
+# 8. Pair Plot: Multiple variable relationships
+sns.pairplot(df[['Survived', 'Age', 'Fare', 'Pclass']])
+plt.suptitle('Pairplot of Survival, Age, Fare, and Passenger Class', y=1.02)
+plt.show()
+
+# Explanation: Pairwise scatter plots and histograms between variables to detect relationships.
+
+# 9. Joint Plot: Age vs Fare
+sns.jointplot(x='Age', y='Fare', data=df, kind='scatter')
+plt.suptitle('Jointplot of Age vs Fare', y=1.02)
+plt.show()
+
+# Explanation: A combined scatter and histogram plot to analyze correlation between Age and Fare.
+
+--------------------- Definitions ---------------------
+
+- pandas: Python library for data manipulation and analysis.
+- seaborn: Python data visualization library based on matplotlib. It provides high-level interface for drawing attractive graphics.
+- matplotlib.pyplot: Low-level plotting library for creating static, animated, and interactive visualizations.
+
+- countplot: Shows counts of observations in each categorical bin using bars.
+- histplot: Displays distribution of numeric data using histogram.
+- kdeplot: Plots the kernel density estimate of a continuous variable.
+- barplot: Shows mean (or other estimator) of a numerical variable for each category.
+- pairplot: Creates a matrix of scatter plots for visualizing pairwise relationships.
+- jointplot: Combines scatter plot with histograms (or KDE) for two variables.
