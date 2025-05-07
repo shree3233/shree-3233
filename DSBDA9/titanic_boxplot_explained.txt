@@ -1,0 +1,87 @@
+
+# Titanic Age Distribution by Gender and Survival - Explained Code
+
+This Python script loads the Titanic dataset, selects relevant columns, handles missing values, and visualizes the age distribution across genders, further separated by survival status using box plots.
+
+---
+## 📦 1. Import Required Libraries
+
+```python
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from matplotlib.patches import Patch
+```
+
+- `pandas` is used for data handling.
+- `seaborn` and `matplotlib.pyplot` are used for visualization.
+- `Patch` is used to manually customize legend colors.
+
+---
+## 📂 2. Load Titanic Dataset
+
+```python
+df = pd.read_csv("C:/PythonXYZ/DSBDA/DSBDA8/Titanic-Dataset.csv")
+```
+
+- Loads the local Titanic CSV file. Ensure the file path is correct.
+
+---
+## 🧹 3. Select Columns and Clean Data
+
+```python
+df = df[['Sex', 'Age', 'Survived']]
+df = df.dropna(subset=['Age'])
+```
+
+- Keeps only the relevant columns: 'Sex', 'Age', and 'Survived'.
+- Removes rows where 'Age' is missing.
+
+---
+## 📊 4. Plot 1: Age Distribution by Gender
+
+```python
+plt.figure(figsize=(8, 6))
+sns.boxplot(x='Sex', y='Age', data=df)
+plt.title('Age Distribution by Gender')
+plt.show()
+```
+
+- Displays how ages are distributed for each gender.
+- Boxplot elements:
+  - **Box**: Middle 50% of the data (IQR)
+  - **Line in box**: Median age
+  - **Whiskers**: Spread of typical values
+  - **Dots**: Outliers (very high or low values)
+
+---
+## 📊 5. Plot 2: Age Distribution by Gender and Survival
+
+```python
+palette = {0: 'red', 1: 'green'}  # Customize colors for survival status
+
+plt.figure(figsize=(8, 6))
+sns.boxplot(x='Sex', y='Age', hue='Survived', data=df, palette=palette)
+plt.title('Age Distribution by Gender and Survival')
+plt.legend(title='Survived', labels=['No', 'Yes'])
+plt.show()
+```
+
+- Adds `hue='Survived'` to split each gender by survival status.
+- Colors defined manually using `palette` to help visually distinguish survived vs not.
+
+---
+## 🎨 6. Optional: Custom Legend Colors (If needed separately)
+
+```python
+# Uncomment to use custom legend colors, independent of plot colors
+# custom_legend = [Patch(color='orange', label='No'), Patch(color='cyan', label='Yes')]
+# plt.legend(handles=custom_legend, title='Survived')
+```
+
+---
+## ✅ Notes:
+
+- Always verify column names from your CSV using `print(df.columns)`.
+- Boxplots are great for spotting differences in median age and outliers between categories.
+
