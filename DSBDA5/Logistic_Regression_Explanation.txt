@@ -1,0 +1,103 @@
+
+📦 1. Importing Libraries
+-------------------------
+import pandas as pd
+from sklearn.model_selection import train_test_split
+from sklearn.linear_model import LogisticRegression
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+- pandas as pd: Used for reading and manipulating data.
+- train_test_split: Splits dataset into training and testing sets.
+- LogisticRegression: Machine learning model for binary classification.
+- Metrics: Used to evaluate model performance.
+
+📂 2. Reading the CSV File
+--------------------------
+df = pd.read_csv("C:/PythonXYZ/DSBDA/archive (2)/Social_Network_Ads.csv")
+- Reads the CSV file into a pandas DataFrame.
+
+👀 3. Viewing the Dataset
+-------------------------
+df
+- Displays the content of the DataFrame.
+
+🔁 4. Converting Categorical to Numeric
+--------------------------------------
+df['Gender'].replace({"Male": 0, "Female": 1}, inplace=True)
+- Converts 'Gender' from text to numbers for ML compatibility.
+
+📑 5. Viewing Columns
+---------------------
+df.columns
+- Lists all column headers.
+
+🎯 6. Defining Features and Target
+----------------------------------
+x = df[['User ID', 'Gender', 'Age', 'EstimatedSalary']]
+y = df['Purchased']
+- x: Input features
+- y: Output label to predict
+
+✂️ 7. Splitting Data
+---------------------
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, random_state=29)
+- Splits into training (75%) and testing (25%) sets.
+
+🧠 8. Model Training
+--------------------
+model = LogisticRegression()
+model.fit(x_train, y_train)
+- Trains logistic regression model on training data.
+
+🧮 Logistic Regression Formula:
+  sigmoid(z) = 1 / (1 + e^-z)
+  z = w0 + w1*x1 + ... + wn*xn
+
+📈 9. Predictions
+------------------
+y_pred = model.predict(x_test)
+- Predicts outcomes (0 or 1) for test data.
+
+✅ 10. Checking Accuracy
+------------------------
+model.score(x_train, y_train)
+model.score(x, y)
+- Computes accuracy = Correct / Total predictions
+
+🔢 11. Confusion Matrix
+------------------------
+cm = confusion_matrix(y_test, y_pred)
+
+Actual \ Pred | 0 (No) | 1 (Yes)
+--------------|--------|---------
+0 (No)        | TN     | FP
+1 (Yes)       | FN     | TP
+
+tn, fp, fn, tp = confusion_matrix(y_test, y_pred).ravel()
+- Extracts each value separately
+
+🧪 12. Evaluation Metrics
+-------------------------
+
+✅ Accuracy:
+a = accuracy_score(y_test, y_pred)
+  Accuracy = (TP + TN) / Total
+
+❌ Error Rate:
+e = 1 - a
+
+🎯 Precision:
+precision_score(y_test, y_pred)
+  Precision = TP / (TP + FP)
+
+📡 Recall:
+recall_score(y_test, y_pred)
+  Recall = TP / (TP + FN)
+
+🎁 Bonus Metrics (not in code)
+------------------------------
+F1 Score:
+  F1 = 2 * (Precision * Recall) / (Precision + Recall)
+
+ROC AUC:
+  Area under the ROC curve (measure of classifier quality)
