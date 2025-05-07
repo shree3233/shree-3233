@@ -1,0 +1,126 @@
+# Summary Statistics Grouped by Categorical Variable
+
+---
+
+# Problem Statement
+
+> Provide summary statistics (mean, median, minimum, maximum, standard deviation) for a dataset (age, income etc.) with numeric variables grouped by one of the qualitative (categorical) variables.  
+> Example: If the categorical variable is Age Group and quantitative variable is Income, provide summary statistics of Income grouped by Age Group.  
+> Also, create a list that contains numeric values (incomes) for each categorical group.
+
+---
+
+# Solution
+
+## Step 1: Import Required Libraries
+```python
+import pandas as pd
+import numpy as np
+```
+**Explanation**:  
+- pandas (`pd`) for handling datasets.
+- numpy (`np`) for numerical operations.
+
+---
+
+## Step 2: Load the Dataset
+```python
+df = pd.read_csv('expanded_age_income_dataset.csv')
+df.head()
+```
+**Explanation**:  
+- Load CSV into DataFrame `df`.
+- `head()` shows first 5 rows.
+
+---
+
+## Step 3: Explore the Data
+```python
+df.info()
+df['Age Group'].unique()
+```
+**Explanation**:  
+- `info()` gives data overview.
+- `unique()` shows all different Age Groups.
+
+---
+
+## Step 4: Group the Data by 'Age Group' and Calculate Summary Statistics
+```python
+grouped = df.groupby('Age Group')['Income']
+summary_statistics = grouped.agg(['mean', 'median', 'min', 'max', 'std']).round(2)
+summary_statistics
+```
+**Explanation**:  
+- Group incomes by `Age Group`.
+- Calculate mean, median, min, max, std deviation.
+- Round to 2 decimal places.
+
+---
+
+## Step 5: Create a List of Incomes for Each Age Group
+```python
+income_lists = df.groupby('Age Group')['Income'].apply(list).to_dict()
+income_lists
+```
+**Explanation**:  
+- Group incomes into lists for each Age Group.
+- Convert to dictionary format.
+
+---
+
+## Step 6: Final Display (Nice Printout)
+```python
+print("\u2705 Summary Statistics for Each Age Group:\n")
+display(summary_statistics)
+
+print("\n\u2705 List of Incomes Grouped by Age Group:\n")
+for age_group, incomes in income_lists.items():
+    print(f"{age_group}: {incomes}")
+```
+**Explanation**:  
+- Print summary statistics.
+- Print list of incomes for each Age Group.
+
+---
+
+# Conclusion
+
+- Grouped Income by Age Group.
+- Calculated mean, median, min, max, std deviation.
+- Created lists of incomes for each Age Group.
+
+# Final Outputs:
+
+### Sample Summary Statistics Table:
+| Age Group | mean | median | min | max | std |
+|:---------:|:----:|:------:|:--:|:--:|:--:|
+| 18-25 | 31,500 | 32,000 | 26,000 | 39,000 | 4068.5 |
+| 26-35 | 49,200 | 50,000 | 41,000 | 59,000 | 5811.2 |
+
+### Sample Income List:
+```python
+{
+  '18-25': [26000, 32000, 39000, 27000, 35000, ...],
+  '26-35': [47000, 53000, 41000, 59000, ...],
+}
+```
+
+---
+
+# Quick Summary
+
+| Line | Action |
+|:----:|:------:|
+| 1-2  | Import libraries |
+| 3-4  | Load dataset |
+| 5-6  | Explore data |
+| 7-8  | Group data |
+| 9-10 | Compute statistics |
+| 11-12 | Create income lists |
+| 13-14 | Final print |
+
+---
+
+# End of Solution 🚀
+
