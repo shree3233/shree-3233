@@ -1,0 +1,176 @@
+
+# Import necessary libraries
+import pandas as pd
+import seaborn as sns
+import matplotlib.pyplot as plt
+from sklearn.model_selection import train_test_split
+from sklearn.naive_bayes import GaussianNB
+from sklearn.metrics import confusion_matrix, accuracy_score, precision_score, recall_score
+
+# Load the dataset
+df = pd.read_csv("iris.csv")
+df.head()
+
+# Define features (X) and target (y)
+x = df[['sepal_length', 'sepal_width', 'petal_length', 'petal_width']]
+y = df['species']
+
+# Split the dataset into training and test sets
+x_train, x_test, y_train, y_test = train_test_split(x, y, test_size=0.25, random_state=42)
+
+# Initialize and train the Naive Bayes model
+model = GaussianNB()
+model.fit(x_train, y_train)
+
+# Make predictions on the test set
+y_pred = model.predict(x_test)
+
+# Confusion Matrix
+cm = confusion_matrix(y_test, y_pred)
+print("Confusion Matrix:
+", cm)
+
+# Plotting the confusion matrix
+sns.heatmap(cm, annot=True, fmt='d', cmap='Blues', xticklabels=model.classes_, yticklabels=model.classes_)
+plt.title("Confusion Matrix Heatmap")
+plt.xlabel("Predicted")
+plt.ylabel("Actual")
+plt.show()
+
+# Evaluate the model
+accuracy = accuracy_score(y_test, y_pred)
+error_rate = 1 - accuracy
+precision = precision_score(y_test, y_pred, average='macro')
+recall = recall_score(y_test, y_pred, average='macro')
+
+# Print evaluation metrics
+print("Accuracy:", accuracy)
+print("Error Rate:", error_rate)
+print("Precision (macro):", precision)
+print("Recall (macro):", recall)
+
+
+# Explanation of each line
+
+
+1. **Importing necessary libraries**
+
+- `pandas`: A powerful library for data manipulation and analysis. It is used to load and manage the dataset in a structured way (i.e., DataFrame).
+- `seaborn`: A statistical data visualization library built on top of `matplotlib`. It's used to generate visually appealing plots like heatmaps.
+- `matplotlib.pyplot`: A plotting library for creating static, animated, and interactive visualizations. It is used here to display graphs like the confusion matrix.
+- `sklearn.model_selection.train_test_split`: A function to split the dataset into training and testing sets.
+- `sklearn.naive_bayes.GaussianNB`: The Gaussian Naive Bayes classifier, which is used to make predictions based on the Naive Bayes theorem, assuming the data follows a Gaussian (normal) distribution.
+- `sklearn.metrics`: A module that provides various functions to evaluate the performance of a model. We will use `confusion_matrix`, `accuracy_score`, `precision_score`, and `recall_score` from this module.
+
+---
+
+2. **Loading the dataset**
+
+- `pd.read_csv("iris.csv")`: Loads the Iris dataset from a CSV file into a pandas DataFrame called `df`. This dataset contains information about flowers with different features like sepal length, sepal width, petal length, and petal width.
+- `df.head()`: Displays the first 5 rows of the dataset. It’s useful to quickly inspect the data and understand its structure.
+
+---
+
+3. **Defining Features and Target Variable**
+
+- `x`: This variable contains the features (independent variables) of the dataset. In this case, the features are the four columns `sepal_length`, `sepal_width`, `petal_length`, and `petal_width`.
+- `y`: This variable contains the target (dependent variable), which is the `species` column representing the type of flower.
+
+### Mathematical Formulation:
+- **Features** \( X = \{ x_1, x_2, x_3, x_4 \} \) for `sepal_length`, `sepal_width`, `petal_length`, `petal_width`.
+- **Target** \( y \) for the species.
+
+---
+
+4. **Splitting the Data into Training and Testing Sets**
+
+- `train_test_split()`: Splits the dataset into training and testing subsets. 
+  - `x_train`, `y_train`: These represent the features and target variable for the training set.
+  - `x_test`, `y_test`: These represent the features and target variable for the test set.
+  - `test_size=0.25`: 25% of the data is used for testing, and the remaining 75% is used for training.
+  - `random_state=42`: Ensures the split is reproducible (the same data split will be generated each time the code runs).
+  
+### Mathematical Formula for Split:
+Let’s assume the dataset has \( N \) total samples.
+- Training data size = \( 	ext{train\_size} = 0.75 	imes N \)
+- Testing data size = \( 	ext{test\_size} = 0.25 	imes N \)
+
+---
+
+5. **Initializing and Training the Naive Bayes Model**
+
+- `GaussianNB()`: Initializes the Gaussian Naive Bayes classifier. This model assumes that each feature follows a Gaussian (normal) distribution.
+- `model.fit(x_train, y_train)`: Trains the Naive Bayes model on the training data. The model learns the relationship between the features (`x_train`) and the target variable (`y_train`).
+
+### Mathematical Formulation (Naive Bayes):
+The Naive Bayes classifier applies Bayes' theorem and assumes independence between the features:
+\[P(y|X) = rac{P(y) \prod_{i=1}^{n} P(x_i|y)}{P(X)}
+\]
+Where:
+- \( P(y|X) \) is the posterior probability of the target class \( y \), given the features \( X \).
+- \( P(y) \) is the prior probability of the target class \( y \).
+- \( P(x_i|y) \) is the likelihood of the feature \( x_i \), given the target class \( y \).
+- \( P(X) \) is the evidence (or marginal likelihood), which is constant across all classes.
+
+---
+
+6. **Making Predictions**
+
+- `model.predict(x_test)`: Uses the trained Naive Bayes model to make predictions on the test set (`x_test`). The predicted classes are stored in `y_pred`.
+
+---
+
+7. **Confusion Matrix**
+
+- `confusion_matrix(y_test, y_pred)`: Calculates the confusion matrix, which compares the predicted labels (`y_pred`) with the true labels (`y_test`).
+  
+The confusion matrix is a table that summarizes the performance of a classification algorithm, showing the counts of:
+- True Positives (TP): Correctly predicted positive instances.
+- False Positives (FP): Incorrectly predicted as positive.
+- True Negatives (TN): Correctly predicted negative instances.
+- False Negatives (FN): Incorrectly predicted as negative.
+
+### Formula for Confusion Matrix:
+\[egin{bmatrix}
+TP & FP \
+FN & TN
+\end{bmatrix}
+\]
+
+---
+
+8. **Plotting the Confusion Matrix**
+
+- `sns.heatmap()`: Visualizes the confusion matrix as a heatmap for better interpretation. The `annot=True` adds the numerical values inside the cells, and `fmt='d'` formats the numbers as integers.
+- `xticklabels=model.classes_`: Labels the x-axis with the predicted classes.
+- `yticklabels=model.classes_`: Labels the y-axis with the actual classes.
+
+---
+
+9. **Evaluating the Model**
+
+- `accuracy_score(y_test, y_pred)`: Calculates the accuracy of the model, which is the proportion of correct predictions.
+  
+  \[  	ext{Accuracy} = rac{TP + TN}{TP + TN + FP + FN}
+  \]
+
+- `error_rate = 1 - accuracy`: The error rate is simply the complement of accuracy.
+  
+  \[  	ext{Error Rate} = 1 - 	ext{Accuracy}
+  \]
+
+- `precision_score(y_test, y_pred, average='macro')`: Precision is the proportion of true positive predictions out of all positive predictions made by the model.
+  
+  \[  	ext{Precision} = rac{TP}{TP + FP}
+  \]
+
+- `recall_score(y_test, y_pred, average='macro')`: Recall (or sensitivity) is the proportion of true positive predictions out of all actual positive instances.
+  
+  \[  	ext{Recall} = rac{TP}{TP + FN}
+  \]
+
+---
+
+10. **Printing the Results**
+
+- These print statements display the calculated performance metrics: Accuracy, Error Rate, Precision (macro-average), and Recall (macro-average).
